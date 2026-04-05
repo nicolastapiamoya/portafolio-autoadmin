@@ -18,3 +18,50 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Experience {
+  id          Int      @id @default(autoincrement())
+  company     String
+  role        String
+  location    String   @default("")
+  startDate   String
+  endDate     String   @default("")
+  current     Boolean  @default(false)
+  description String
+  techStack   String[] @default([])
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  description String
+  techStack   String[] @default([])
+  demoUrl     String   @default("")
+  repoUrl     String   @default("")
+  imageUrl    String   @default("")
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SocialLink {
+  id       Int      @id @default(autoincrement())
+  platform String   @unique
+  url      String
+  icon     String   @default("")
+  order    Int      @default(0)
+  active   Boolean  @default(true)
+}
+
+model SiteConfig {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  value       String
+  description String   @default("")
+  updatedAt   DateTime @updatedAt
+}
