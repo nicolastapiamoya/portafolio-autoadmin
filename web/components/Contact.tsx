@@ -45,11 +45,11 @@ export default function Contact() {
 
         <div className="flex flex-wrap justify-center gap-4">
           <a
-            href="mailto:nicolas.tapia@example.com"
+            href="mailto:nicousm46@gmail.com"
             className="social-link"
           >
             <Mail size={18} />
-            <span>email</span>
+            <span>nicousm46@gmail.com</span>
           </a>
           <a
             href="https://github.com/nicolastapiamoya"

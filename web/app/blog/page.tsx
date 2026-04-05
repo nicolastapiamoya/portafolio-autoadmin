@@ -23,7 +23,7 @@ export default async function BlogPage() {
           {/* Header */}
           <Link
             href="/"
-            className="inline-flex items-center gap-2 font-mono text-sm text-[#8b949e] hover:text-accent transition-colors mb-8"
+            className="inline-flex items-center gap-2 font-mono text-sm text-muted hover:text-accent transition-colors mb-8"
           >
             <ArrowLeft size={14} />
             cd ~/home
@@ -32,10 +32,10 @@ export default async function BlogPage() {
           <div className="font-mono text-[var(--green-dim)] text-sm mb-2">
             $ ls -la blog/
           </div>
-          <h1 className="text-3xl font-mono font-bold text-white mb-2">
+          <h1 className="text-3xl font-mono font-bold text-primary mb-2">
             <span className="text-accent">//</span> blog
           </h1>
-          <p className="font-mono text-[#8b949e] text-sm mb-10">
+          <p className="font-mono text-muted text-sm mb-10">
             {posts.length} post{posts.length !== 1 ? "s" : ""} encontrado
             {posts.length !== 1 ? "s" : ""}
           </p>
@@ -47,7 +47,7 @@ export default async function BlogPage() {
               <p className="font-mono text-[var(--green-dim)] text-sm mb-2">
                 $ cat empty.txt
               </p>
-              <p className="font-mono text-[#8b949e]">
+              <p className="font-mono text-muted">
                 No hay posts todavía. ¡Pronto habrá contenido!
               </p>
               <p className="font-mono text-accent mt-3 cursor-blink">_</p>
