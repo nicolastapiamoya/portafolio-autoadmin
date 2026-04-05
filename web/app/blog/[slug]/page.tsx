@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
+import MermaidInit from "@/components/MermaidInit"
 import { getPostBySlug } from "@/lib/posts"
 import { remark } from "remark"
 import remarkHtml from "remark-html"
@@ -10,8 +11,12 @@ import { ArrowLeft, Calendar, Tag } from "lucide-react"
 export const dynamic = "force-dynamic"
 
 async function markdownToHtml(markdown: string) {
-  const result = await remark().use(remarkHtml).process(markdown)
-  return result.toString()
+  const result = await remark().use(remarkHtml, { sanitize: false }).process(markdown)
+  const html = result.toString()
+  return html.replace(
+    /<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g,
+    (_, code) => `<div class="mermaid">${code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&")}</div>`
+  )
 }
 
 export default async function PostPage({
@@ -87,6 +92,7 @@ export default async function PostPage({
           </div>
 
           {/* Post content */}
+          <MermaidInit />
           <div
             className="prose-terminal font-mono text-sm leading-relaxed text-[#e6edf3]"
             dangerouslySetInnerHTML={{ __html: contentHtml }}
