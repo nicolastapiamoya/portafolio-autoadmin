@@ -1,4 +1,6 @@
+"use client"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { FileText, Briefcase, Folder, Share2, Settings } from "lucide-react"
 
 export default function AdminLayout({
@@ -6,6 +8,13 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
+  const pathname = usePathname()
+  const isLoginPage = pathname === "/admin/login"
+
+  if (isLoginPage) {
+    return <div className="min-h-screen bg-page">{children}</div>
+  }
+
   return (
     <div className="min-h-screen bg-page">
       <nav className="fixed left-0 top-0 h-screen w-16 bg-[#060c12] border-r border-[rgba(var(--green-rgb),0.1)] flex flex-col items-center py-6 gap-4 z-50">
