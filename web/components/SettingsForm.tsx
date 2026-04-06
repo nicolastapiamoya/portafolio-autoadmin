@@ -10,6 +10,11 @@ interface SettingsFormProps {
     location: string
     siteTitle: string
     siteDescription: string
+    name: string
+    tagline: string
+    role: string
+    company: string
+    aboutBio: string
   }
 }
 
@@ -20,6 +25,11 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
   const [location, setLocation] = useState(initialData.location)
   const [siteTitle, setSiteTitle] = useState(initialData.siteTitle)
   const [siteDescription, setSiteDescription] = useState(initialData.siteDescription)
+  const [name, setName] = useState(initialData.name)
+  const [tagline, setTagline] = useState(initialData.tagline)
+  const [role, setRole] = useState(initialData.role)
+  const [company, setCompany] = useState(initialData.company)
+  const [aboutBio, setAboutBio] = useState(initialData.aboutBio)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
@@ -56,6 +66,49 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
       </div>
 
       <div className="terminal-body p-6 space-y-6">
+        {/* Hero */}
+        <div className="space-y-4">
+          <h3 className="font-mono text-accent text-sm border-b border-[rgba(var(--green-rgb),0.2)] pb-2">hero:</h3>
+          <div>
+            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">name:</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Nicolás Tapia Moya"
+                className="input-terminal flex-1"
+              />
+              <button
+                onClick={() => handleSave("name", name, "Nombre completo")}
+                disabled={loading}
+                className="btn-terminal-outline px-3"
+              >
+                <Send size={14} />
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">tagline:</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={tagline}
+                onChange={(e) => setTagline(e.target.value)}
+                placeholder="Software Engineer especializado en..."
+                className="input-terminal flex-1"
+              />
+              <button
+                onClick={() => handleSave("tagline", tagline, "Tagline / Bio corta")}
+                disabled={loading}
+                className="btn-terminal-outline px-3"
+              >
+                <Send size={14} />
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Site Info */}
         <div className="space-y-4">
           <h3 className="font-mono text-accent text-sm border-b border-[rgba(var(--green-rgb),0.2)] pb-2">site_info:</h3>
@@ -92,6 +145,87 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
                 onClick={() => handleSave("siteDescription", siteDescription, "Descripción SEO del sitio")}
                 disabled={loading}
                 className="btn-terminal-outline px-3"
+              >
+                <Send size={14} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* About */}
+        <div className="space-y-4">
+          <h3 className="font-mono text-accent text-sm border-b border-[rgba(var(--green-rgb),0.2)] pb-2">about:</h3>
+          <div>
+            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">role:</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                placeholder="Software Engineer II"
+                className="input-terminal flex-1"
+              />
+              <button
+                onClick={() => handleSave("role", role, "Cargo / Rol")}
+                disabled={loading}
+                className="btn-terminal-outline px-3"
+              >
+                <Send size={14} />
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">company:</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="Cencosud S.A."
+                className="input-terminal flex-1"
+              />
+              <button
+                onClick={() => handleSave("company", company, "Empresa actual")}
+                disabled={loading}
+                className="btn-terminal-outline px-3"
+              >
+                <Send size={14} />
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">location:</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Santiago, Chile"
+                className="input-terminal flex-1"
+              />
+              <button
+                onClick={() => handleSave("location", location, "Ubicación")}
+                disabled={loading}
+                className="btn-terminal-outline px-3"
+              >
+                <Send size={14} />
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">bio:</label>
+            <div className="flex gap-2">
+              <textarea
+                value={aboutBio}
+                onChange={(e) => setAboutBio(e.target.value)}
+                placeholder="Biografía para la sección About..."
+                rows={3}
+                className="input-terminal flex-1"
+              />
+              <button
+                onClick={() => handleSave("aboutBio", aboutBio, "Biografía About")}
+                disabled={loading}
+                className="btn-terminal-outline px-3 self-start"
               >
                 <Send size={14} />
               </button>

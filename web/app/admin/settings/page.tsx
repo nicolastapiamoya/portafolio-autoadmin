@@ -38,6 +38,11 @@ export default async function SettingsPage() {
               location: configMap.location ?? "",
               siteTitle: configMap.siteTitle ?? "",
               siteDescription: configMap.siteDescription ?? "",
+              name: configMap.name ?? "",
+              tagline: configMap.tagline ?? "",
+              role: configMap.role ?? "",
+              company: configMap.company ?? "",
+              aboutBio: configMap.aboutBio ?? "",
             }}
           />
           <SocialsManager socials={socials} />

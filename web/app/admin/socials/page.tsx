@@ -55,6 +55,9 @@ export default async function SocialsAdminPage() {
                     <a href={social.url} target="_blank" rel="noopener noreferrer" className="p-1.5 text-[#8b949e] hover:text-accent transition-colors" title="Ver">
                       <ExternalLink size={14} />
                     </a>
+                    <Link href={`/admin/socials/edit/${social.id}`} className="p-1.5 text-[#8b949e] hover:text-accent transition-colors" title="Editar">
+                      <Pencil size={14} />
+                    </Link>
                     <AdminDeleteSocialButton id={social.id} />
                   </div>
                 </div>

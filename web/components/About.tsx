@@ -41,6 +41,7 @@ interface Experience {
 
 interface AboutProps {
   experiences?: Experience[]
+  config?: Record<string, string>
 }
 
 function SkillGroup({
@@ -74,9 +75,15 @@ function SkillGroup({
   )
 }
 
-export default function About({ experiences = [] }: AboutProps) {
+export default function About({ experiences = [], config = {} }: AboutProps) {
   const { t } = useLanguage()
   const [ref, visible] = useInView()
+
+  const name = config.name ?? "Nicolás Tapia Moya"
+  const location = config.location ?? "Santiago, Chile 🇨🇱"
+  const role = config.role ?? "Software Engineer II"
+  const company = config.company ?? "Cencosud S.A."
+  const aboutBio = config.aboutBio ?? t.about.bio
 
   return (
     <section id="about" className="relative py-28 bg-page">
@@ -111,19 +118,19 @@ export default function About({ experiences = [] }: AboutProps) {
               <div className="terminal-body p-6 font-mono text-sm space-y-3">
                 <p>
                   <span className="text-accent">name:</span>{" "}
-                  <span className="text-primary">Nicolás Tapia Moya</span>
+                  <span className="text-primary">{name}</span>
                 </p>
                 <p>
                   <span className="text-accent">location:</span>{" "}
-                  <span className="text-primary">Santiago, Chile 🇨🇱</span>
+                  <span className="text-primary">{location}</span>
                 </p>
                 <p>
                   <span className="text-accent">role:</span>{" "}
-                  <span className="text-primary">Software Engineer II</span>
+                  <span className="text-primary">{role}</span>
                 </p>
                 <p>
                   <span className="text-accent">company:</span>{" "}
-                  <span className="text-primary">Cencosud S.A.</span>
+                  <span className="text-primary">{company}</span>
                 </p>
                 <p>
                   <span className="text-accent">experience:</span>{" "}
@@ -131,7 +138,7 @@ export default function About({ experiences = [] }: AboutProps) {
                 </p>
                 <div className="border-t border-[rgba(var(--green-rgb),0.12)] pt-3 mt-3">
                   <p className="text-muted leading-relaxed">
-                    {"// "} {t.about.bio}
+                    {"// "} {aboutBio}
                   </p>
                 </div>
                 <p className="text-[var(--green-dim)] cursor-blink mt-1">_</p>

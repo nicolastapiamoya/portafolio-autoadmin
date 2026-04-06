@@ -23,7 +23,7 @@ export default async function Home() {
       <Navbar />
       <main>
         <Hero config={configMap} />
-        <About experiences={experiences} />
+        <About experiences={experiences} config={configMap} />
         <Projects projects={projects} />
         <Contact socials={socials} config={configMap} />
       </main>
