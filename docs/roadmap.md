@@ -1,8 +1,8 @@
 # Product Roadmap
 
-## Q2 2026 — Foundation & Launch
+## Q2 2026 — Foundation & Launch ✅
 
-**Mayo 2026**
+**Mayo 2026 — COMPLETADO**
 - [x] Portfolio básico con Next.js 16
 - [x] Blog con CRUD admin protegido
 - [x] Deploy en producción con dominio + SSL
@@ -23,16 +23,15 @@
 - [ ] Sistema de newsletter
 - [ ] Comentarios con Giscus
 
-## Q3 2026 — CMS Admin (Content Management)
+## Q3 2026 — CMS Admin COMPLETADO ✅
 
-**Agosto — Septiembre 2026**
-- [ ] **Admin Homepage**: Editar Hero, secciones destacadas
-- [ ] **Admin Experiencias**: CRUD experiencias laborales (timeline)
-- [ ] **Admin Proyectos**: Crear/editar/ordenar proyectos del portfolio
-- [ ] **Admin About**: Editar biografía, skills, foto de perfil
-- [ ] **Admin Contacto**: Editar email, LinkedIn, GitHub
-- [ ] **Admin Redes Sociales**: Añadir/eliminar redes (Twitter/X, Bluesky, YouTube, etc.)
-- [ ] **Admin Settings**: Tema por defecto, metadatos del sitio
+**Agosto — Septiembre 2026 — ADELANTADO**
+- [x] **Admin Dashboard**: Stats de posts, experiencias, proyectos, redes sociales
+- [x] **Admin Experiencias**: CRUD completo de experiencias laborales
+- [x] **Admin Proyectos**: Crear/editar/ordenar proyectos del portfolio
+- [x] **Admin About/Hero/Settings**: Editar biografía, nombre, tagline, role, company (bilingüe ES/EN)
+- [x] **Admin Redes Sociales**: CRUD redes sociales (LinkedIn, GitHub, Twitter/X, etc.)
+- [x] **Multilanguage Support**: Soporte ES/EN completo en CMS y frontend
 
 ## Q4 2026 — Polish & Scale
 
@@ -45,5 +44,5 @@
 
 ---
 
-**Estado actual**: `v1.0` — Foundation completa, live en producción
-**Próximo milestone**: `v1.1` — SEO + Analytics (Junio 2026)
+**Estado actual**: `v1.2` — CMS Admin completo con soporte multilanguage
+**Próximo milestone**: `v1.3` — SEO + Analytics

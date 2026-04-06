@@ -14,15 +14,13 @@
 - [ ] **Tags dinámicas**: Páginas `/blog/tag/[tag]` con posts filtrados
 - [ ] **Series de posts**: Agrupar posts relacionados en series
 
-## CMS Admin (Content Management System)
+## CMS Admin (Content Management System) - COMPLETADO ✅
 
-- [ ] **Admin Homepage**: Editor de Hero, tagline, CTA, secciones destacadas
-- [ ] **Admin Experiencias**: CRUD completo de experiencias laborales (empresa, cargo, fecha, descripción, tecnologías)
-- [ ] **Admin Proyectos**: Crear, editar, ordenar, destacar proyectos del portfolio
-- [ ] **Admin About**: Editar biografía, foto de perfil, skills con niveles, CV PDF
-- [ ] **Admin Contacto**: Editar email, LinkedIn, GitHub, ubicación
-- [ ] **Admin Redes Sociales**: Añadir/eliminar/editar redes sociales (Twitter/X, Bluesky, YouTube, Instagram, etc.)
-- [ ] **Admin Settings**: Configuración general del sitio (tema por defecto, título, descripción SEO)
+- [x] **Admin Dashboard**: Homepage con stats de posts, experiencias, proyectos, redes sociales
+- [x] **Admin Experiencias**: CRUD completo de experiencias laborales (empresa, cargo, fecha, descripción, tecnologías)
+- [x] **Admin Proyectos**: Crear, editar, ordenar, destacar proyectos del portfolio
+- [x] **Admin About/Hero/Settings**: Editar biografía, nombre, tagline, role, company, location (bilingüe ES/EN)
+- [x] **Admin Redes Sociales**: Añadir/eliminar/editar redes sociales (LinkedIn, GitHub, Twitter/X, etc.)
 
 ## Mejoras Técnicas
 
@@ -32,9 +30,13 @@
 - [ ] **Rate limiting**: Protección API routes
 - [ ] **Image optimization**: Next.js Image component con CDN
 
-## Ideas Futuras
+## Completado ✅
 
-- [ ] **Portfolio multilanguage**: Soportar más idiomas (FR, DE)
-- [ ] **Dark/light toggle**: Persistencia en localStorage
-- [ ] **Terminal easter egg**: Konami code o comando secreto
-- [ ] **Stats page**: Dashboard público con analytics (visits, posts, etc)
+- [x] **Portfolio multilanguage**: Soporte ES/EN en Hero, About, y todo el contenido del CMS
+- [x] **Dark/light toggle**: Persistencia en localStorage
+- [x] **Terminal easter egg**: Animaciones y estilo terminal
+- [x] **Stats dashboard**: Admin dashboard con métricas de contenido
+
+---
+
+*Última actualización: Abril 2026*

@@ -26,13 +26,13 @@ export default function Hero({ config = {} }: HeroProps) {
   const nameKey = lang === 'en' && config.name_en ? 'name_en' : 'name'
   const taglineKey = lang === 'en' && config.tagline_en ? 'tagline_en' : 'tagline'
   
-  const name = config[nameKey] ?? "Nicolás Tapia Moya"
+  const name = config[nameKey] ?? "Name"
   const tagline = config[taglineKey] ?? t.hero.bio
-  const siteTitle = config.siteTitle ?? "nicolastapiamoya.com"
+  const siteTitle = config.siteTitle ?? "yourwebsite.com"
   
   const nameParts = name.split(" ")
-  const firstName = nameParts[0] ?? "Nicolás"
-  const lastNames = nameParts.slice(1).join(" ") ?? "Tapia Moya"
+  const firstName = nameParts[0] ?? "Name"
+  const lastNames = nameParts.slice(1).join(" ") ?? "Lastname"
 
   useEffect(() => {
     if (waiting) return
@@ -89,7 +89,7 @@ export default function Hero({ config = {} }: HeroProps) {
               <div className="w-3 h-3 rounded-full bg-[#28c940]" />
             </div>
             <span className="text-muted text-xs">
-              bash — {config.siteTitle ?? "nicolastapiamoya.com"} — 80x24
+              bash — {config.siteTitle ?? "yourwebsite.com"} — 80x24
             </span>
             <div className="w-14" />
           </div>
