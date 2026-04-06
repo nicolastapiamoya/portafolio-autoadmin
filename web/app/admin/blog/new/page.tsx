@@ -9,11 +9,11 @@ export default function NewPostPage() {
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <Link
-            href="/admin"
+            href="/admin/blog"
             className="inline-flex items-center gap-2 font-mono text-sm text-[#8b949e] hover:text-accent transition-colors"
           >
             <ArrowLeft size={14} />
-            cd ~/admin
+            cd ~/blog
           </Link>
           <AdminLogout />
         </div>
