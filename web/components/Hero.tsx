@@ -28,7 +28,7 @@ export default function Hero({ config = {} }: HeroProps) {
   
   const name = config[nameKey] ?? "Nicolás Tapia Moya"
   const tagline = config[taglineKey] ?? t.hero.bio
-  const siteTitle = config.siteTitle ?? "nicolastapiamoya.dev"
+  const siteTitle = config.siteTitle ?? "nicolastapiamoya.com"
   
   const nameParts = name.split(" ")
   const firstName = nameParts[0] ?? "Nicolás"
@@ -89,7 +89,7 @@ export default function Hero({ config = {} }: HeroProps) {
               <div className="w-3 h-3 rounded-full bg-[#28c940]" />
             </div>
             <span className="text-muted text-xs">
-              bash — {config.siteTitle ?? "nicolastapiamoya.dev"} — 80x24
+              bash — {config.siteTitle ?? "nicolastapiamoya.com"} — 80x24
             </span>
             <div className="w-14" />
           </div>

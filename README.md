@@ -1,6 +1,6 @@
-# nicolastapiamoya.dev
+# nicolastapiamoya.com
 
-Portfolio personal + blog — monorepo con **Next.js 16**, **PostgreSQL** y **Docker Compose**.
+Portfolio personal autoadministrado + blog — monorepo con **Next.js 16**, **PostgreSQL** y **Docker Compose**.
 
 ## Estructura
 
