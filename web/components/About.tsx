@@ -26,46 +26,22 @@ const SKILLS = [
   },
 ]
 
-const EXPERIENCE = [
-  {
-    company: "Cencosud S.A.",
-    role: "Software Engineer II · Senior Backend Engineer",
-    period: "jun. 2022 – actualidad",
-    items: [
-      "Dev Lead Backend en Paris App, Home Headless y Cart Headless",
-      "Microservicios en Go (Gin, FX, gRPC) y Node.js / NestJS",
-      "Proyectos White Label para Chile, Colombia y Argentina",
-      "Integración con SFCC, Commerce Tools y VTEX",
-      "Orquestación con Docker y Kubernetes",
-    ],
-  },
-  {
-    company: "BC Tecnología",
-    role: "Full-stack Developer (Backend-focused)",
-    period: "feb. 2021 – jun. 2022",
-    items: [
-      "Backend para Paris App en Cencosud",
-      "Microservicios en Node.js / NestJS con Salesforce OCAPI",
-      "APIs REST, Docker y Kubernetes en producción",
-    ],
-  },
-  {
-    company: "Cooperativa Lautaro Rosas",
-    role: "Analista de Programación",
-    period: "feb. 2020 – ene. 2021",
-    items: ["Aplicaciones web con PHP y Vue.js", "Mantenimiento de sistemas"],
-  },
-  {
-    company: "Trabajos anteriores (2017 – 2020)",
-    role: "IT Arrow · Axia Tecnologia · Aligare · T&S S.A.",
-    period: "abr. 2017 – ene. 2020",
-    items: [
-      "Java Android, PHP, JavaScript, C#, SQL Server",
-      "Migración de servidores y BD a AWS",
-      "Desarrollo web y soporte de red",
-    ],
-  },
-]
+interface Experience {
+  id: number
+  company: string
+  role: string
+  location: string
+  startDate: string
+  endDate: string
+  current: boolean
+  description: string
+  techStack: string[]
+  order: number
+}
+
+interface AboutProps {
+  experiences?: Experience[]
+}
 
 function SkillGroup({
   group,
@@ -98,7 +74,7 @@ function SkillGroup({
   )
 }
 
-export default function About() {
+export default function About({ experiences = [] }: AboutProps) {
   const { t } = useLanguage()
   const [ref, visible] = useInView()
 
@@ -185,38 +161,49 @@ export default function About() {
               {t.about.experience_cmd}
             </div>
             <div className="relative border-l border-[rgba(var(--green-rgb),0.2)] ml-3 space-y-8">
-              {EXPERIENCE.map((job, i) => (
-                <motion.div
-                  key={job.company}
-                  animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -20 }}
-                  transition={{ duration: 0.5, delay: 0.35 + i * 0.1, ease: "easeOut" as const }}
-                  className="relative pl-6"
-                >
-                  <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-[var(--green)] border-2 border-[var(--bg)]" />
-                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 mb-1">
-                    <span className="font-mono font-bold text-primary text-sm">
-                      {job.company}
-                    </span>
-                    <span className="font-mono text-[var(--green-dim)] text-xs">
-                      [{job.period}]
-                    </span>
-                  </div>
-                  <p className="font-mono text-accent text-xs mb-2">
-                    {job.role}
-                  </p>
-                  <ul className="space-y-1">
-                    {job.items.map((item) => (
-                      <li
-                        key={item}
-                        className="font-mono text-muted text-xs flex gap-2"
-                      >
-                        <span className="text-[var(--green-dim)] shrink-0">▸</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
+              {experiences.length === 0 ? (
+                <p className="font-mono text-[#8b949e] text-sm pl-6">No hay experiencias registradas.</p>
+              ) : (
+                experiences.map((job, i) => (
+                  <motion.div
+                    key={job.id}
+                    animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -20 }}
+                    transition={{ duration: 0.5, delay: 0.35 + i * 0.1, ease: "easeOut" as const }}
+                    className="relative pl-6"
+                  >
+                    <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-[var(--green)] border-2 border-[var(--bg)]" />
+                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 mb-1">
+                      <span className="font-mono font-bold text-primary text-sm">
+                        {job.company}
+                      </span>
+                      <span className="font-mono text-[var(--green-dim)] text-xs">
+                        [{job.startDate} — {job.current ? "presente" : job.endDate}]
+                      </span>
+                    </div>
+                    <p className="font-mono text-accent text-xs mb-2">
+                      {job.role}
+                    </p>
+                    <ul className="space-y-1">
+                      {job.description.split("\n").map((item, idx) => item.trim() && (
+                        <li
+                          key={idx}
+                          className="font-mono text-muted text-xs flex gap-2"
+                        >
+                          <span className="text-[var(--green-dim)] shrink-0">▸</span>
+                          {item.trim()}
+                        </li>
+                      ))}
+                    </ul>
+                    {job.techStack.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {job.techStack.map((t) => (
+                          <span key={t} className="tag text-[10px] px-1.5 py-0">{t}</span>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                ))
+              )}
             </div>
           </motion.div>
       </div>

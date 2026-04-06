@@ -12,7 +12,11 @@ const TYPING_TEXTS = [
   "Microservices Architect",
 ]
 
-export default function Hero() {
+interface HeroProps {
+  config?: Record<string, string>
+}
+
+export default function Hero({ config = {} }: HeroProps) {
   const { t } = useLanguage()
   const [displayText, setDisplayText] = useState("")
   const [textIndex, setTextIndex] = useState(0)
@@ -50,6 +54,11 @@ export default function Hero() {
     transition: { duration: 0.7, delay: delay / 1000, ease: "easeOut" as const },
   })
 
+  const name = config.name ?? "Nicolás Tapia Moya"
+  const nameParts = name.split(" ")
+  const firstName = nameParts[0] ?? "Nicolás"
+  const lastNames = nameParts.slice(1).join(" ") ?? "Tapia Moya"
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-page scanlines">
       <ParticlesBackground />
@@ -74,7 +83,7 @@ export default function Hero() {
               <div className="w-3 h-3 rounded-full bg-[#28c940]" />
             </div>
             <span className="text-muted text-xs">
-              bash — nicolastapiamoya.dev — 80x24
+              bash — {config.siteTitle ?? "nicolastapiamoya.dev"} — 80x24
             </span>
             <div className="w-14" />
           </div>
@@ -84,8 +93,8 @@ export default function Hero() {
             <motion.div {...fadeUp(200)}>
               <p className="text-[var(--green-dim)] text-sm mb-2">$ whoami</p>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-primary">
-                Nicolás{" "}
-                <span className="text-accent glow-green">Tapia Moya</span>
+                {firstName}{" "}
+                <span className="text-accent glow-green">{lastNames}</span>
               </h1>
             </motion.div>
 
@@ -101,7 +110,7 @@ export default function Hero() {
                 </span>
               </div>
               <p className="mt-4 text-muted text-sm leading-relaxed max-w-lg">
-                {"//"} {t.hero.bio}
+                {"//"} {config.tagline ?? t.hero.bio}
               </p>
             </motion.div>
 

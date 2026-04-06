@@ -18,48 +18,22 @@ function GithubIcon({ size = 14 }: { size?: number }) {
   )
 }
 
-const PROJECTS = [
-  {
-    name: "SalesFull",
-    desc: "Plataforma SaaS multi-tenant de e-commerce y CRM para Latinoamérica. Cada negocio obtiene su propia tienda en tutienda.salesfull.cl, dashboard de admin, POS, CMS, marketing y agente IA integrado.",
-    tags: ["Express.js", "Next.js", "PostgreSQL", "Multi-tenant", "AI Agent"],
-    status: "en desarrollo",
-    github: "https://github.com/nicolastapiamoya/salesfull-monorepo",
-    demo: null,
-  },
-  {
-    name: "MAKOM",
-    desc: "App móvil de descubrimiento y publicación de eventos basada en ubicación. Conecta personas con experiencias reales: familiares, culturales, gastronómicas, deportivas y más.",
-    tags: ["Flutter", "Go", "Location API", "PostgreSQL"],
-    status: "en desarrollo",
-    github: "https://github.com/appmakom/app_makom",
-    demo: null,
-  },
-  {
-    name: "AgentAI Platform",
-    desc: "Plataforma completa para crear, gestionar y orquestar agentes de IA con herramientas personalizadas: APIs HTTP, búsqueda web, SSH, Telegram, Gmail y más. Multi-LLM con Claude, DeepSeek, Ollama y GPT.",
-    tags: ["Go", "LLMs", "Claude", "Ollama", "Kokoro", "Multi-Agent", "PostgreSQL"],
-    status: "en desarrollo",
-    github: "https://github.com/nicolastapiamoya/agent-ai-platform",
-    demo: null,
-  },
-  {
-    name: "Fluxa",
-    desc: "Sistema de pagos empresarial con arquitectura de microservicios, event-driven y ledger-first. Procesa pagos con tarjetas, gestión de merchants, tokenización PCI-compliant y liquidaciones automáticas.",
-    tags: ["Go", "Microservicios", "Event-driven", "PostgreSQL", "PCI"],
-    status: "en desarrollo",
-    github: "https://github.com/nicolastapiamoya/fluxa",
-    demo: null,
-  },
-  {
-    name: "Portfolio + Blog",
-    desc: "Este sitio. Monorepo Next.js 16 con App Router, PostgreSQL + Prisma 5, NextAuth v5, Docker Compose y animaciones con Motion (framer-motion).",
-    tags: ["Next.js", "TypeScript", "Prisma", "Docker", "PostgreSQL"],
-    status: "open source",
-    github: "https://github.com/nicolastapiamoya/nicolastapiamoya",
-    demo: null,
-  },
-]
+interface Project {
+  id: number
+  title: string
+  slug: string
+  description: string
+  techStack: string[]
+  demoUrl: string
+  repoUrl: string
+  imageUrl: string
+  featured: boolean
+  order: number
+}
+
+interface ProjectsProps {
+  projects?: Project[]
+}
 
 const STATUS_COLORS: Record<string, string> = {
   production: "var(--green)",
@@ -70,7 +44,9 @@ const STATUS_COLORS: Record<string, string> = {
   completado: "var(--green-dim)",
 }
 
-function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
+function ProjectCard({ project }: { project: Project }) {
+  const status = project.featured ? "destacado" : "en desarrollo"
+
   return (
     <motion.div
       whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(var(--green-rgb),0.12)" }}
@@ -85,12 +61,12 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
           <div className="w-3 h-3 rounded-full bg-[#28c940]/70" />
         </div>
         <span className="text-muted text-xs font-mono">
-          {project.name.toLowerCase().replace(/ /g, "_")}.sh
+          {project.slug}.sh
         </span>
         <div className="flex gap-3 items-center">
-          {project.github && (
+          {project.repoUrl && (
             <a
-              href={project.github}
+              href={project.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted hover:text-accent transition-colors"
@@ -98,9 +74,9 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
               <GithubIcon size={14} />
             </a>
           )}
-          {project.demo && (
+          {project.demoUrl && (
             <a
-              href={project.demo}
+              href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted hover:text-accent transition-colors"
@@ -115,25 +91,25 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
       <div className="terminal-body p-5 flex flex-col flex-1">
         <div className="flex items-start justify-between mb-3 gap-2">
           <h3 className="font-mono font-bold text-primary text-base leading-snug">
-            {project.name}
+            {project.title}
           </h3>
           <span
             className="text-xs font-mono px-2 py-0.5 border shrink-0"
             style={{
-              color: STATUS_COLORS[project.status] ?? "#8b949e",
-              borderColor: (STATUS_COLORS[project.status] ?? "#8b949e") + "55",
+              color: STATUS_COLORS[status] ?? "#8b949e",
+              borderColor: (STATUS_COLORS[status] ?? "#8b949e") + "55",
             }}
           >
-            [{project.status}]
+            [{status}]
           </span>
         </div>
 
         <p className="font-mono text-muted text-xs leading-relaxed mb-4 flex-1">
-          {project.desc}
+          {project.description}
         </p>
 
         <div className="flex flex-wrap gap-2 mt-auto">
-          {project.tags.map((tag) => (
+          {project.techStack.map((tag) => (
             <span key={tag} className="tag">
               {tag}
             </span>
@@ -144,9 +120,11 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
   )
 }
 
-export default function Projects() {
+export default function Projects({ projects = [] }: ProjectsProps) {
   const { t } = useLanguage()
   const [ref, visible] = useInView({ threshold: 0.05 })
+
+  const displayProjects = projects.length > 0 ? projects : null
 
   return (
     <section id="projects" className="py-28 bg-page2">
@@ -163,20 +141,28 @@ export default function Projects() {
           </h2>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {PROJECTS.map((project, i) => (
-            <motion.div
-              key={project.name}
-              animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 40 }}
-              transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease: "easeOut" as const }}
-              className="flex"
-            >
-              <div className="w-full">
-                <ProjectCard project={project} />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {displayProjects ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {displayProjects.map((project, i) => (
+              <motion.div
+                key={project.id}
+                animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 40 }}
+                transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease: "easeOut" as const }}
+                className="flex"
+              >
+                <div className="w-full">
+                  <ProjectCard project={project} />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="terminal-window p-8 text-center">
+            <p className="font-mono text-[#8b949e] text-sm">
+              No hay proyectos registrados. Agrégalos desde el admin.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   )
