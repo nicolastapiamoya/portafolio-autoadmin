@@ -43,6 +43,7 @@ export default async function SettingsPage() {
               role: configMap.role ?? "",
               company: configMap.company ?? "",
               aboutBio: configMap.aboutBio ?? "",
+              experienceLabel: configMap.experienceLabel ?? "",
             }}
           />
           <SocialsManager socials={socials} />

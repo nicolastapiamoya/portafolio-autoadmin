@@ -84,6 +84,7 @@ export default function About({ experiences = [], config = {} }: AboutProps) {
   const role = config.role ?? "Software Engineer II"
   const company = config.company ?? "Cencosud S.A."
   const aboutBio = config.aboutBio ?? t.about.bio
+  const experienceLabel = config.experienceLabel ?? t.about.experience_label
 
   return (
     <section id="about" className="relative py-28 bg-page">
@@ -134,7 +135,7 @@ export default function About({ experiences = [], config = {} }: AboutProps) {
                 </p>
                 <p>
                   <span className="text-accent">experience:</span>{" "}
-                  <span className="text-primary">{t.about.experience_label}</span>
+                  <span className="text-primary">{experienceLabel}</span>
                 </p>
                 <div className="border-t border-[rgba(var(--green-rgb),0.12)] pt-3 mt-3">
                   <p className="text-muted leading-relaxed">

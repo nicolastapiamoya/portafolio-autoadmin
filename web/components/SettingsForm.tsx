@@ -15,6 +15,7 @@ interface SettingsFormProps {
     role: string
     company: string
     aboutBio: string
+    experienceLabel: string
   }
 }
 
@@ -30,6 +31,7 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
   const [role, setRole] = useState(initialData.role)
   const [company, setCompany] = useState(initialData.company)
   const [aboutBio, setAboutBio] = useState(initialData.aboutBio)
+  const [experienceLabel, setExperienceLabel] = useState(initialData.experienceLabel)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
@@ -226,6 +228,25 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
                 onClick={() => handleSave("aboutBio", aboutBio, "Biografía About")}
                 disabled={loading}
                 className="btn-terminal-outline px-3 self-start"
+              >
+                <Send size={14} />
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">experience:</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={experienceLabel}
+                onChange={(e) => setExperienceLabel(e.target.value)}
+                placeholder="8+ years"
+                className="input-terminal flex-1"
+              />
+              <button
+                onClick={() => handleSave("experienceLabel", experienceLabel, "Años de experiencia")}
+                disabled={loading}
+                className="btn-terminal-outline px-3"
               >
                 <Send size={14} />
               </button>
