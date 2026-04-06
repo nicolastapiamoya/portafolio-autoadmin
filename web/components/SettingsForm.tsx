@@ -8,14 +8,22 @@ interface SettingsFormProps {
     linkedin: string
     github: string
     location: string
+    location_en: string
     siteTitle: string
+    siteTitle_en: string
     siteDescription: string
+    siteDescription_en: string
     name: string
+    name_en: string
     tagline: string
+    tagline_en: string
     role: string
+    role_en: string
     company: string
     aboutBio: string
+    aboutBio_en: string
     experienceLabel: string
+    experienceLabel_en: string
   }
 }
 
@@ -24,14 +32,22 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
   const [linkedin, setLinkedin] = useState(initialData.linkedin)
   const [github, setGithub] = useState(initialData.github)
   const [location, setLocation] = useState(initialData.location)
+  const [locationEn, setLocationEn] = useState(initialData.location_en)
   const [siteTitle, setSiteTitle] = useState(initialData.siteTitle)
+  const [siteTitleEn, setSiteTitleEn] = useState(initialData.siteTitle_en)
   const [siteDescription, setSiteDescription] = useState(initialData.siteDescription)
+  const [siteDescriptionEn, setSiteDescriptionEn] = useState(initialData.siteDescription_en)
   const [name, setName] = useState(initialData.name)
+  const [nameEn, setNameEn] = useState(initialData.name_en)
   const [tagline, setTagline] = useState(initialData.tagline)
+  const [taglineEn, setTaglineEn] = useState(initialData.tagline_en)
   const [role, setRole] = useState(initialData.role)
+  const [roleEn, setRoleEn] = useState(initialData.role_en)
   const [company, setCompany] = useState(initialData.company)
   const [aboutBio, setAboutBio] = useState(initialData.aboutBio)
+  const [aboutBioEn, setAboutBioEn] = useState(initialData.aboutBio_en)
   const [experienceLabel, setExperienceLabel] = useState(initialData.experienceLabel)
+  const [experienceLabelEn, setExperienceLabelEn] = useState(initialData.experienceLabel_en)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
@@ -71,42 +87,36 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
         {/* Hero */}
         <div className="space-y-4">
           <h3 className="font-mono text-accent text-sm border-b border-[rgba(var(--green-rgb),0.2)] pb-2">hero:</h3>
-          <div>
-            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">name:</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Nicolás Tapia Moya"
-                className="input-terminal flex-1"
-              />
-              <button
-                onClick={() => handleSave("name", name, "Nombre completo")}
-                disabled={loading}
-                className="btn-terminal-outline px-3"
-              >
-                <Send size={14} />
-              </button>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">name (es):</label>
+              <div className="flex gap-2">
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nicolás Tapia Moya" className="input-terminal flex-1" />
+                <button onClick={() => handleSave("name", name, "Nombre completo ES")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
+            </div>
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">name (en):</label>
+              <div className="flex gap-2">
+                <input type="text" value={nameEn} onChange={(e) => setNameEn(e.target.value)} placeholder="Nicolás Tapia Moya" className="input-terminal flex-1" />
+                <button onClick={() => handleSave("name_en", nameEn, "Nombre completo EN")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
             </div>
           </div>
-          <div>
-            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">tagline:</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={tagline}
-                onChange={(e) => setTagline(e.target.value)}
-                placeholder="Software Engineer especializado en..."
-                className="input-terminal flex-1"
-              />
-              <button
-                onClick={() => handleSave("tagline", tagline, "Tagline / Bio corta")}
-                disabled={loading}
-                className="btn-terminal-outline px-3"
-              >
-                <Send size={14} />
-              </button>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">tagline (es):</label>
+              <div className="flex gap-2">
+                <input type="text" value={tagline} onChange={(e) => setTagline(e.target.value)} placeholder="Software Engineer..." className="input-terminal flex-1" />
+                <button onClick={() => handleSave("tagline", tagline, "Tagline ES")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
+            </div>
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">tagline (en):</label>
+              <div className="flex gap-2">
+                <input type="text" value={taglineEn} onChange={(e) => setTaglineEn(e.target.value)} placeholder="Software Engineer..." className="input-terminal flex-1" />
+                <button onClick={() => handleSave("tagline_en", taglineEn, "Tagline EN")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
             </div>
           </div>
         </div>
@@ -157,99 +167,75 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
         {/* About */}
         <div className="space-y-4">
           <h3 className="font-mono text-accent text-sm border-b border-[rgba(var(--green-rgb),0.2)] pb-2">about:</h3>
-          <div>
-            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">role:</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                placeholder="Software Engineer II"
-                className="input-terminal flex-1"
-              />
-              <button
-                onClick={() => handleSave("role", role, "Cargo / Rol")}
-                disabled={loading}
-                className="btn-terminal-outline px-3"
-              >
-                <Send size={14} />
-              </button>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">role (es):</label>
+              <div className="flex gap-2">
+                <input type="text" value={role} onChange={(e) => setRole(e.target.value)} placeholder="Software Engineer II" className="input-terminal flex-1" />
+                <button onClick={() => handleSave("role", role, "Cargo ES")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
+            </div>
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">role (en):</label>
+              <div className="flex gap-2">
+                <input type="text" value={roleEn} onChange={(e) => setRoleEn(e.target.value)} placeholder="Software Engineer II" className="input-terminal flex-1" />
+                <button onClick={() => handleSave("role_en", roleEn, "Cargo EN")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
             </div>
           </div>
           <div>
             <label className="font-mono text-[#8b949e] text-xs block mb-1.5">company:</label>
             <div className="flex gap-2">
-              <input
-                type="text"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                placeholder="Cencosud S.A."
-                className="input-terminal flex-1"
-              />
-              <button
-                onClick={() => handleSave("company", company, "Empresa actual")}
-                disabled={loading}
-                className="btn-terminal-outline px-3"
-              >
-                <Send size={14} />
-              </button>
+              <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Cencosud S.A." className="input-terminal flex-1" />
+              <button onClick={() => handleSave("company", company, "Empresa")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
             </div>
           </div>
-          <div>
-            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">location:</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Santiago, Chile"
-                className="input-terminal flex-1"
-              />
-              <button
-                onClick={() => handleSave("location", location, "Ubicación")}
-                disabled={loading}
-                className="btn-terminal-outline px-3"
-              >
-                <Send size={14} />
-              </button>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">location (es):</label>
+              <div className="flex gap-2">
+                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Santiago, Chile" className="input-terminal flex-1" />
+                <button onClick={() => handleSave("location", location, "Ubicación ES")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
+            </div>
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">location (en):</label>
+              <div className="flex gap-2">
+                <input type="text" value={locationEn} onChange={(e) => setLocationEn(e.target.value)} placeholder="Santiago, Chile" className="input-terminal flex-1" />
+                <button onClick={() => handleSave("location_en", locationEn, "Ubicación EN")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
             </div>
           </div>
-          <div>
-            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">bio:</label>
-            <div className="flex gap-2">
-              <textarea
-                value={aboutBio}
-                onChange={(e) => setAboutBio(e.target.value)}
-                placeholder="Biografía para la sección About..."
-                rows={3}
-                className="input-terminal flex-1"
-              />
-              <button
-                onClick={() => handleSave("aboutBio", aboutBio, "Biografía About")}
-                disabled={loading}
-                className="btn-terminal-outline px-3 self-start"
-              >
-                <Send size={14} />
-              </button>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">bio (es):</label>
+              <div className="flex gap-2">
+                <textarea value={aboutBio} onChange={(e) => setAboutBio(e.target.value)} placeholder="Biografía..." rows={3} className="input-terminal flex-1" />
+                <button onClick={() => handleSave("aboutBio", aboutBio, "Bio ES")} disabled={loading} className="btn-terminal-outline px-3 self-start"><Send size={14} /></button>
+              </div>
+            </div>
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">bio (en):</label>
+              <div className="flex gap-2">
+                <textarea value={aboutBioEn} onChange={(e) => setAboutBioEn(e.target.value)} placeholder="Bio..." rows={3} className="input-terminal flex-1" />
+                <button onClick={() => handleSave("aboutBio_en", aboutBioEn, "Bio EN")} disabled={loading} className="btn-terminal-outline px-3 self-start"><Send size={14} /></button>
+              </div>
             </div>
           </div>
-          <div>
-            <label className="font-mono text-[#8b949e] text-xs block mb-1.5">experience:</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={experienceLabel}
-                onChange={(e) => setExperienceLabel(e.target.value)}
-                placeholder="8+ years"
-                className="input-terminal flex-1"
-              />
-              <button
-                onClick={() => handleSave("experienceLabel", experienceLabel, "Años de experiencia")}
-                disabled={loading}
-                className="btn-terminal-outline px-3"
-              >
-                <Send size={14} />
-              </button>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">experience (es):</label>
+              <div className="flex gap-2">
+                <input type="text" value={experienceLabel} onChange={(e) => setExperienceLabel(e.target.value)} placeholder="8+ años" className="input-terminal flex-1" />
+                <button onClick={() => handleSave("experienceLabel", experienceLabel, "Exp ES")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
+            </div>
+            <div>
+              <label className="font-mono text-[#8b949e] text-xs block mb-1.5">experience (en):</label>
+              <div className="flex gap-2">
+                <input type="text" value={experienceLabelEn} onChange={(e) => setExperienceLabelEn(e.target.value)} placeholder="8+ years" className="input-terminal flex-1" />
+                <button onClick={() => handleSave("experienceLabel_en", experienceLabelEn, "Exp EN")} disabled={loading} className="btn-terminal-outline px-3"><Send size={14} /></button>
+              </div>
             </div>
           </div>
         </div>

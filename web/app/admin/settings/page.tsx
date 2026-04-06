@@ -36,14 +36,22 @@ export default async function SettingsPage() {
               linkedin: configMap.linkedin ?? "",
               github: configMap.github ?? "",
               location: configMap.location ?? "",
+              location_en: configMap.location_en ?? "",
               siteTitle: configMap.siteTitle ?? "",
+              siteTitle_en: configMap.siteTitle_en ?? "",
               siteDescription: configMap.siteDescription ?? "",
+              siteDescription_en: configMap.siteDescription_en ?? "",
               name: configMap.name ?? "",
+              name_en: configMap.name_en ?? "",
               tagline: configMap.tagline ?? "",
+              tagline_en: configMap.tagline_en ?? "",
               role: configMap.role ?? "",
+              role_en: configMap.role_en ?? "",
               company: configMap.company ?? "",
               aboutBio: configMap.aboutBio ?? "",
+              aboutBio_en: configMap.aboutBio_en ?? "",
               experienceLabel: configMap.experienceLabel ?? "",
+              experienceLabel_en: configMap.experienceLabel_en ?? "",
             }}
           />
           <SocialsManager socials={socials} />

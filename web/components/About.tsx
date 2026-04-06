@@ -76,15 +76,21 @@ function SkillGroup({
 }
 
 export default function About({ experiences = [], config = {} }: AboutProps) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [ref, visible] = useInView()
 
-  const name = config.name ?? "Nicolás Tapia Moya"
-  const location = config.location ?? "Santiago, Chile 🇨🇱"
-  const role = config.role ?? "Software Engineer II"
+  const nameKey = lang === 'en' && config.name_en ? 'name_en' : 'name'
+  const locationKey = lang === 'en' && config.location_en ? 'location_en' : 'location'
+  const roleKey = lang === 'en' && config.role_en ? 'role_en' : 'role'
+  const aboutBioKey = lang === 'en' && config.aboutBio_en ? 'aboutBio_en' : 'aboutBio'
+  const experienceLabelKey = lang === 'en' && config.experienceLabel_en ? 'experienceLabel_en' : 'experienceLabel'
+
+  const name = config[nameKey] ?? "Nicolás Tapia Moya"
+  const location = config[locationKey] ?? "Santiago, Chile 🇨🇱"
+  const role = config[roleKey] ?? "Software Engineer II"
   const company = config.company ?? "Cencosud S.A."
-  const aboutBio = config.aboutBio ?? t.about.bio
-  const experienceLabel = config.experienceLabel ?? t.about.experience_label
+  const aboutBio = config[aboutBioKey] ?? t.about.bio
+  const experienceLabel = config[experienceLabelKey] ?? t.about.experience_label
 
   return (
     <section id="about" className="relative py-28 bg-page">

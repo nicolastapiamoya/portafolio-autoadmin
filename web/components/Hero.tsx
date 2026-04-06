@@ -17,11 +17,22 @@ interface HeroProps {
 }
 
 export default function Hero({ config = {} }: HeroProps) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [displayText, setDisplayText] = useState("")
   const [textIndex, setTextIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
   const [waiting, setWaiting] = useState(false)
+
+  const nameKey = lang === 'en' && config.name_en ? 'name_en' : 'name'
+  const taglineKey = lang === 'en' && config.tagline_en ? 'tagline_en' : 'tagline'
+  
+  const name = config[nameKey] ?? "Nicolás Tapia Moya"
+  const tagline = config[taglineKey] ?? t.hero.bio
+  const siteTitle = config.siteTitle ?? "nicolastapiamoya.dev"
+  
+  const nameParts = name.split(" ")
+  const firstName = nameParts[0] ?? "Nicolás"
+  const lastNames = nameParts.slice(1).join(" ") ?? "Tapia Moya"
 
   useEffect(() => {
     if (waiting) return
@@ -53,11 +64,6 @@ export default function Hero({ config = {} }: HeroProps) {
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.7, delay: delay / 1000, ease: "easeOut" as const },
   })
-
-  const name = config.name ?? "Nicolás Tapia Moya"
-  const nameParts = name.split(" ")
-  const firstName = nameParts[0] ?? "Nicolás"
-  const lastNames = nameParts.slice(1).join(" ") ?? "Tapia Moya"
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-page scanlines">
