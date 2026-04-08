@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, FileText, Briefcase, Folder, Share2, Settings, Eye, TrendingUp, Star } from "lucide-react"
+import { ArrowLeft, FileText, Briefcase, Folder, Share2, Settings, Eye, TrendingUp, Star, MessageCircle } from "lucide-react"
 import AdminLogout from "@/components/AdminLogout"
 
 interface DashboardStats {
@@ -14,6 +14,11 @@ interface DashboardStats {
   projects: number
   socials: number
   configs: number
+  chat: {
+    totalChats: number
+    totalMessages: number
+    todayChats: number
+  }
 }
 
 function StatCard({ 
@@ -113,8 +118,8 @@ export default function AdminDashboard() {
 
         {/* Stats Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[...Array(4)].map((_, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {[...Array(5)].map((_, i) => (
               <div key={i} className="terminal-window animate-pulse">
                 <div className="terminal-body p-5">
                   <div className="h-10 bg-[rgba(var(--green-rgb),0.1)] rounded" />
@@ -123,7 +128,7 @@ export default function AdminDashboard() {
             ))}
           </div>
         ) : stats ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
             <StatCard
               title="Posts"
               value={stats.posts.total}
@@ -148,6 +153,13 @@ export default function AdminDashboard() {
               value={stats.socials}
               icon={Share2}
               href="/admin/socials"
+            />
+            <StatCard
+              title="Chats IA"
+              value={stats.chat?.totalChats || 0}
+              icon={MessageCircle}
+              href="/admin/chats"
+              subtitle={`${stats.chat?.todayChats || 0} hoy, ${stats.chat?.totalMessages || 0} mensajes`}
             />
           </div>
         ) : null}

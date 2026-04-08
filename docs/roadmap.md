@@ -9,6 +9,14 @@
 - [x] Tema terminal (cyan/verde)
 - [x] Diagramas Mermaid en posts
 
+**Abril 2026 — AI Chat Agent 🆕**
+- [x] Servicio Ollama con Gemma 3 4B local
+- [x] Tablas `Chat` y `Message` para trackear conversaciones
+- [x] API `/api/chat` con contexto del perfil y proyectos
+- [x] Componente `ChatWidget` flotante con tema terminal
+- [x] Tracking de IP, user agent, país y referrer
+- [x] Integración en layout principal
+
 **Junio 2026**
 - [ ] SEO completo (meta tags, OpenGraph, sitemap)
 - [ ] RSS feed `/feed.xml`
@@ -44,5 +52,5 @@
 
 ---
 
-**Estado actual**: `v1.2` — CMS Admin completo con soporte multilanguage
-**Próximo milestone**: `v1.3` — SEO + Analytics
+**Estado actual**: `v1.3` — CMS Admin + AI Chat Agent local con Gemma 3
+**Próximo milestone**: `v1.4` — SEO + Analytics
