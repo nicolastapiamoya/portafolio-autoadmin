@@ -1,7 +1,7 @@
 #!/bin/sh
 # Script para inicializar Ollama y descargar el modelo Gemma 4
 
-MODEL="${OLLAMA_MODEL:-gemma4:e2b}"
+MODEL="${OLLAMA_MODEL:-gemma:2b}"
 OLLAMA_HOST="${OLLAMA_HOST:-http://ollama:11434}"
 
 echo "⏳ Esperando a que Ollama esté disponible..."

@@ -37,7 +37,7 @@ services:
     volumes:
       - ./ollama-init.sh:/init.sh:ro
     environment:
-      - OLLAMA_MODEL=gemma4:e2b
+      - OLLAMA_MODEL=gemma:2b
     entrypoint: ["/bin/sh", "/init.sh"]
     restart: "no"
 
@@ -55,7 +55,7 @@ services:
       ADMIN_USERNAME: ${ADMIN_USERNAME}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       OLLAMA_URL: http://ollama:11434
-      OLLAMA_MODEL: gemma4:e2b
+      OLLAMA_MODEL: gemma:2b
     depends_on:
       db:
         condition: service_healthy
