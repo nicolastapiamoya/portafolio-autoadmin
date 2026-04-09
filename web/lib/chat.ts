@@ -84,6 +84,15 @@ export async function getRecentChats(limit: number = 50): Promise<Chat[]> {
   })
 }
 
+export async function getAllChatsWithCount(): Promise<
+  (Chat & { _count: { messages: number } })[]
+> {
+  return prisma.chat.findMany({
+    orderBy: { updatedAt: "desc" },
+    include: { _count: { select: { messages: true } } },
+  })
+}
+
 export async function getChatStats(): Promise<{
   totalChats: number
   totalMessages: number
@@ -107,5 +116,14 @@ export async function getChatStats(): Promise<{
 export async function deleteChat(sessionId: string): Promise<void> {
   await prisma.chat.delete({
     where: { sessionId },
+  })
+}
+
+export async function getChatById(
+  id: number
+): Promise<ChatWithMessages | null> {
+  return prisma.chat.findUnique({
+    where: { id },
+    include: { messages: { orderBy: { createdAt: "asc" } } },
   })
 }

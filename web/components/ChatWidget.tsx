@@ -80,36 +80,87 @@ export default function ChatWidget() {
     setMessages((prev) => [...prev, tempUserMessage])
 
     try {
-      const response = await fetch("/api/chat", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          action: "send",
+          action: "send-stream",
           sessionId,
           message: userMessage,
         }),
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || "Failed to send message")
+      if (!res.ok || !res.body) {
+        throw new Error("Failed to start stream")
       }
 
-      const data = await response.json()
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let assistantContent = ""
+      let buffer = ""
+      const assistantId = Date.now() + 1
 
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now() + 1,
+          id: assistantId,
           role: "assistant",
-          content: data.message,
+          content: "",
           createdAt: new Date().toISOString(),
         },
       ])
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        buffer += decoder.decode(value, { stream: true })
+
+        // Process complete SSE events (separated by double newline)
+        const events = buffer.split("\n\n")
+        buffer = events.pop() || "" // Keep incomplete event in buffer
+
+        for (const event of events) {
+          const lines = event.split("\n")
+          let eventName = ""
+          let data = ""
+
+          for (const line of lines) {
+            if (line.startsWith("event: ")) {
+              eventName = line.slice(7)
+            } else if (line.startsWith("data: ")) {
+              data = line.slice(6)
+            }
+          }
+
+          if (eventName === "token" && data) {
+            try {
+              const parsed = JSON.parse(data)
+              if (parsed.token) {
+                assistantContent += parsed.token
+                setMessages((prev) =>
+                  prev.map((msg) =>
+                    msg.id === assistantId
+                      ? { ...msg, content: assistantContent }
+                      : msg
+                  )
+                )
+              }
+            } catch {
+            }
+          } else if (eventName === "error") {
+            throw new Error("Stream error")
+          } else if (eventName === "done") {
+            setIsLoading(false)
+            return
+          }
+        }
+      }
+
+      setIsLoading(false)
     } catch (err) {
       setError("Error al enviar el mensaje. Intenta de nuevo.")
-      setMessages((prev) => prev.slice(0, -1))
-    } finally {
+      setMessages((prev) => prev.filter((m) => m.role !== "assistant" || m.content !== "").slice(0, -1))
       setIsLoading(false)
     }
   }
@@ -207,7 +258,12 @@ export default function ChatWidget() {
                   : "bg-[var(--terminal-header)] text-[var(--text)] border border-[rgba(var(--green-rgb),0.1)]"
               }`}
             >
-              <p className="whitespace-pre-wrap">{msg.content}</p>
+              <p className="whitespace-pre-wrap">
+                {msg.content}
+                {msg.role === "assistant" && isLoading && msg.id === messages[messages.length - 1]?.id && (
+                  <span className="inline-block w-2 h-4 bg-[var(--green)] ml-0.5 animate-pulse" />
+                )}
+              </p>
             </div>
           </div>
         ))}
@@ -218,16 +274,17 @@ export default function ChatWidget() {
               <Bot size={16} className="text-[var(--green)]" />
             </div>
             <div className="flex items-center gap-1 rounded-lg bg-[var(--terminal-header)] px-3 py-2">
+              <span className="font-mono text-xs text-[var(--text-dim)]">generando</span>
               <span
-                className="h-2 w-2 rounded-full bg-[var(--green)] animate-bounce"
+                className="h-1.5 w-1.5 rounded-full bg-[var(--green)] animate-bounce"
                 style={{ animationDelay: "0ms" }}
               />
               <span
-                className="h-2 w-2 rounded-full bg-[var(--green)] animate-bounce"
+                className="h-1.5 w-1.5 rounded-full bg-[var(--green)] animate-bounce"
                 style={{ animationDelay: "150ms" }}
               />
               <span
-                className="h-2 w-2 rounded-full bg-[var(--green)] animate-bounce"
+                className="h-1.5 w-1.5 rounded-full bg-[var(--green)] animate-bounce"
                 style={{ animationDelay: "300ms" }}
               />
             </div>

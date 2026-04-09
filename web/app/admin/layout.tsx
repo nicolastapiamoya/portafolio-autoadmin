@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, FileText, Briefcase, Folder, Share2, Settings } from "lucide-react"
+import { LayoutDashboard, FileText, Briefcase, Folder, Share2, Settings, MessageCircle } from "lucide-react"
 
 export default function AdminLayout({
   children,
@@ -32,6 +32,9 @@ export default function AdminLayout({
         </Link>
         <Link href="/admin/socials" className="p-2.5 rounded-lg text-[#8b949e] hover:text-accent hover:bg-[rgba(var(--green-rgb),0.05)] transition-colors" title="Redes Sociales">
           <Share2 size={20} />
+        </Link>
+        <Link href="/admin/chats" className="p-2.5 rounded-lg text-[#8b949e] hover:text-accent hover:bg-[rgba(var(--green-rgb),0.05)] transition-colors" title="Chats IA">
+          <MessageCircle size={20} />
         </Link>
         <div className="flex-1" />
         <Link href="/admin/settings" className="p-2.5 rounded-lg text-[#8b949e] hover:text-accent hover:bg-[rgba(var(--green-rgb),0.05)] transition-colors" title="Configuración">

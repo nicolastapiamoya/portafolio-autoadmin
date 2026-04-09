@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script para inicializar Ollama y descargar el modelo Gemma 3 4B
 
-MODEL="${OLLAMA_MODEL:-gemma3:4b}"
+MODEL="${OLLAMA_MODEL:-gemma4:e2b}"
 
 echo "⏳ Esperando a que Ollama esté disponible..."
 
