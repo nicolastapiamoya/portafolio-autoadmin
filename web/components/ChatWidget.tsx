@@ -195,7 +195,7 @@ export default function ChatWidget() {
           <Bot size={18} className="text-[var(--green)]" />
           <span className="font-mono text-sm text-[var(--text)]">Agente IA</span>
           <span className="rounded-full bg-[rgba(var(--green-rgb),0.15)] px-2 py-0.5 text-xs text-[var(--green)]">
-            gemma:2b
+            phi3:mini
           </span>
         </div>
         <div className="flex items-center gap-2">

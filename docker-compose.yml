@@ -37,7 +37,7 @@ services:
     volumes:
       - ./ollama-init.sh:/init.sh:ro
     environment:
-      - OLLAMA_MODEL=gemma:2b
+      - OLLAMA_MODEL=phi3:mini
     entrypoint: ["/bin/sh", "/init.sh"]
     restart: "no"
 
@@ -55,7 +55,7 @@ services:
       ADMIN_USERNAME: ${ADMIN_USERNAME}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       OLLAMA_URL: http://ollama:11434
-      OLLAMA_MODEL: gemma:2b
+      OLLAMA_MODEL: phi3:mini
     depends_on:
       db:
         condition: service_healthy
