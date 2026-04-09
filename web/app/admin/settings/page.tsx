@@ -4,6 +4,7 @@ import { getAllSiteConfigs, getAllSocialLinksAdmin } from "@/lib/cms"
 import AdminLogout from "@/components/AdminLogout"
 import SettingsForm from "@/components/SettingsForm"
 import SocialsManager from "@/components/SocialsManager"
+import AIProviderForm from "@/components/AIProviderForm"
 
 export const dynamic = "force-dynamic"
 
@@ -30,6 +31,11 @@ export default async function SettingsPage() {
         </h1>
 
         <div className="space-y-8">
+          <AIProviderForm
+            initialProvider={configMap.ai_provider ?? "ollama"}
+            initialModel={configMap.ai_model ?? ""}
+            initialApiKey={configMap.ai_api_key ?? ""}
+          />
           <SettingsForm
             initialData={{
               email: configMap.email ?? "",

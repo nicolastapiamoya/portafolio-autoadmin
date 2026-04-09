@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createChat, getChatBySessionId, addMessage, getChatHistory, deleteChat } from "@/lib/chat"
 import { getAgentContext, buildSystemPrompt } from "@/lib/agent-context"
+import { getAIConfig, streamChat } from "@/lib/ai-provider"
 
 function getClientInfo(req: NextRequest) {
   const headers = req.headers
@@ -22,8 +23,15 @@ export async function POST(req: NextRequest) {
 
     if (action === "create") {
       const clientInfo = getClientInfo(req)
-      const sessionId = await createChat(clientInfo)
-      return NextResponse.json({ sessionId })
+      const [sessionId, aiConfig] = await Promise.all([
+        createChat(clientInfo),
+        getAIConfig(),
+      ])
+      return NextResponse.json({
+        sessionId,
+        provider: aiConfig.provider,
+        model: aiConfig.model,
+      })
     }
 
     if (action === "send") {
@@ -46,54 +54,18 @@ export async function POST(req: NextRequest) {
       const history = await getChatHistory(sessionId)
       const context = await getAgentContext()
       const systemPrompt = buildSystemPrompt(context)
-
+      const aiConfig = await getAIConfig()
       const ollamaUrl = process.env.OLLAMA_URL || "http://localhost:11434"
-      const model = process.env.OLLAMA_MODEL || "gemma3:4b"
 
       const messages = [
-        { role: "system", content: systemPrompt },
-        ...history.map((m) => ({ role: m.role, content: m.content })),
+        { role: "system" as const, content: systemPrompt },
+        ...history.map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
       ]
 
-      const response = await fetch(`${ollamaUrl}/api/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: AbortSignal.timeout(600_000),
-        body: JSON.stringify({
-          model,
-          messages,
-          stream: true,
-          keep_alive: "24h",
-          options: {
-            temperature: 0.7,
-            num_predict: 500,
-          },
-        }),
-      })
-
-      if (!response.ok) {
-        throw new Error(`Ollama error: ${response.status}`)
-      }
-
-      const reader = response.body!.getReader()
-      const decoder = new TextDecoder()
       let assistantMessage = ""
-
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        const chunk = decoder.decode(value, { stream: true })
-        for (const line of chunk.split("\n")) {
-          if (!line.trim()) continue
-          try {
-            const parsed = JSON.parse(line)
-            if (parsed.message?.content) {
-              assistantMessage += parsed.message.content
-            }
-          } catch {
-          }
-        }
-      }
+      try {
+        assistantMessage = await streamChat(aiConfig, messages, ollamaUrl, () => {})
+      } catch {}
 
       if (!assistantMessage) {
         assistantMessage = "Lo siento, no pude procesar tu mensaje."
@@ -124,13 +96,12 @@ export async function POST(req: NextRequest) {
       const history = await getChatHistory(sessionId)
       const context = await getAgentContext()
       const systemPrompt = buildSystemPrompt(context)
-
+      const aiConfig = await getAIConfig()
       const ollamaUrl = process.env.OLLAMA_URL || "http://localhost:11434"
-      const model = process.env.OLLAMA_MODEL || "gemma3:4b"
 
       const messages = [
-        { role: "system", content: systemPrompt },
-        ...history.map((m) => ({ role: m.role, content: m.content })),
+        { role: "system" as const, content: systemPrompt },
+        ...history.map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
       ]
 
       const encoder = new TextEncoder()
@@ -139,52 +110,14 @@ export async function POST(req: NextRequest) {
       const stream = new ReadableStream({
         async start(controller) {
           try {
-            const ollamaRes = await fetch(`${ollamaUrl}/api/chat`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              signal: AbortSignal.timeout(600_000),
-              body: JSON.stringify({
-                model,
-                messages,
-                stream: true,
-                keep_alive: "24h",
-                options: {
-                  temperature: 0.7,
-                  num_predict: 500,
-                },
-              }),
+            fullMessage = await streamChat(aiConfig, messages, ollamaUrl, (token) => {
+              controller.enqueue(encoder.encode(`event: token\ndata: ${JSON.stringify({ token })}\n\n`))
             })
-
-            if (!ollamaRes.ok) {
-              controller.enqueue(encoder.encode(`event: error\ndata: ${JSON.stringify({ error: "Ollama error" })}\n\n`))
-              controller.close()
-              return
-            }
-
-            const reader = ollamaRes.body!.getReader()
-            const decoder = new TextDecoder()
-
-            while (true) {
-              const { done, value } = await reader.read()
-              if (done) break
-              const chunk = decoder.decode(value, { stream: true })
-              for (const line of chunk.split("\n")) {
-                if (!line.trim()) continue
-                try {
-                  const parsed = JSON.parse(line)
-                  if (parsed.message?.content) {
-                    fullMessage += parsed.message.content
-                    controller.enqueue(encoder.encode(`event: token\ndata: ${JSON.stringify({ token: parsed.message.content })}\n\n`))
-                  }
-                } catch {
-                }
-              }
-            }
 
             await addMessage(sessionId, "assistant", fullMessage || "Lo siento, no pude procesar tu mensaje.")
             controller.enqueue(encoder.encode(`event: done\ndata: ${JSON.stringify({ fullMessage })}\n\n`))
             controller.close()
-          } catch (err) {
+          } catch {
             controller.enqueue(encoder.encode(`event: error\ndata: ${JSON.stringify({ error: "Failed to stream" })}\n\n`))
             controller.close()
           }

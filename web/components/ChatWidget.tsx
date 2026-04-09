@@ -18,6 +18,7 @@ export default function ChatWidget() {
   const [isLoading, setIsLoading] = useState(false)
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [modelLabel, setModelLabel] = useState<string>("IA")
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -47,6 +48,9 @@ export default function ChatWidget() {
 
       const data = await response.json()
       setSessionId(data.sessionId)
+      if (data.model) {
+        setModelLabel(data.provider === "ollama" ? data.model : `${data.provider}/${data.model}`)
+      }
 
       setMessages([
         {
@@ -195,7 +199,7 @@ export default function ChatWidget() {
           <Bot size={18} className="text-[var(--green)]" />
           <span className="font-mono text-sm text-[var(--text)]">Agente IA</span>
           <span className="rounded-full bg-[rgba(var(--green-rgb),0.15)] px-2 py-0.5 text-xs text-[var(--green)]">
-            phi3:mini
+            {modelLabel}
           </span>
         </div>
         <div className="flex items-center gap-2">

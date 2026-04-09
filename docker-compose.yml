@@ -29,6 +29,7 @@ services:
       timeout: 10s
       retries: 5
 
+
   ollama-init:
     image: curlimages/curl:latest
     depends_on:
@@ -37,7 +38,7 @@ services:
     volumes:
       - ./ollama-init.sh:/init.sh:ro
     environment:
-      - OLLAMA_MODEL=phi3:mini
+      - OLLAMA_MODEL=llama3.2:1b
     entrypoint: ["/bin/sh", "/init.sh"]
     restart: "no"
 
@@ -55,11 +56,12 @@ services:
       ADMIN_USERNAME: ${ADMIN_USERNAME}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       OLLAMA_URL: http://ollama:11434
-      OLLAMA_MODEL: phi3:mini
+      OLLAMA_MODEL: llama3.2:1b
     depends_on:
       db:
         condition: service_healthy
       ollama:
+      
         condition: service_started
 
 volumes:

@@ -1,25 +1,30 @@
 import { getAllExperiences, getAllProjects, getAllSocialLinks, getSiteConfig } from "./cms"
+import { getAllPosts } from "./posts"
 
 export interface AgentContext {
   profile: {
     name: string
     title: string
     about: string
+    siteUrl: string
   }
   experiences: Awaited<ReturnType<typeof getAllExperiences>>
   projects: Awaited<ReturnType<typeof getAllProjects>>
   socials: Awaited<ReturnType<typeof getAllSocialLinks>>
+  posts: Awaited<ReturnType<typeof getAllPosts>>
 }
 
 export async function getAgentContext(): Promise<AgentContext> {
-  const [experiences, projects, socials, nameConfig, titleConfig, aboutConfig] =
+  const [experiences, projects, socials, posts, nameConfig, titleConfig, aboutConfig, siteUrlConfig] =
     await Promise.all([
       getAllExperiences(),
       getAllProjects(),
       getAllSocialLinks(),
+      getAllPosts(),
       getSiteConfig("name"),
       getSiteConfig("role"),
       getSiteConfig("aboutBio"),
+      getSiteConfig("siteUrl"),
     ])
 
   return {
@@ -27,10 +32,12 @@ export async function getAgentContext(): Promise<AgentContext> {
       name: nameConfig?.value || "",
       title: titleConfig?.value || "",
       about: aboutConfig?.value || "",
+      siteUrl: siteUrlConfig?.value || process.env.NEXTAUTH_URL || "",
     },
     experiences,
     projects,
     socials,
+    posts,
   }
 }
 
@@ -66,6 +73,16 @@ No digas nada más sobre la persona.`
     .map((s) => `- ${s.platform}: ${s.url}`)
     .join("\n")
 
+  const postsText = context.posts
+    .map((p) => {
+      const url = context.profile.siteUrl
+        ? `${context.profile.siteUrl.replace(/\/$/, "")}/blog/${p.slug}`
+        : `/blog/${p.slug}`
+      const tags = p.tags.length ? ` [${p.tags.join(", ")}]` : ""
+      return `- "${p.title}"${tags}: ${p.excerpt || "(sin resumen)"}. Link: ${url}`
+    })
+    .join("\n")
+
   const displayName = context.profile.name || "esta persona"
   const firstName = context.profile.name.split(" ")[0] || "el portafolio"
 
@@ -82,15 +99,19 @@ ${experiencesText || "(sin datos registrados)"}
 PROYECTOS:
 ${projectsText || "(sin datos registrados)"}
 
+ARTÍCULOS DEL BLOG:
+${postsText || "(sin artículos publicados)"}
+
 REDES:
 ${socialsText || "(sin datos registrados)"}
 
 INSTRUCCIONES CRÍTICAS - DEBES SEGUIRLAS EXACTAMENTE:
-- NUNCA inventes, supongas ni agregues información que no esté en los DATOS PERSONA de arriba
+- NUNCA inventes, supongas ni agregues información que no esté en los datos de arriba
 - Si un campo dice "(no configurado)" o "(sin datos registrados)", responde que esa información no está disponible
 - Tu nombre es "Asistente de ${firstName}"
 - SOLO habla sobre la información que aparece explícitamente arriba
 - Si preguntan algo que no está en los datos, responde: "No tengo esa información disponible."
+- Cuando menciones un artículo del blog, incluye siempre su link completo
 - Máximo 3 oraciones por respuesta
 - Idioma: responde en español o inglés según la pregunta
 - NO te presentes como "soy un modelo" ni "soy una IA"
