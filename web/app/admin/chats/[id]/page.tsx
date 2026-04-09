@@ -6,8 +6,9 @@ import { notFound } from "next/navigation"
 
 export const dynamic = "force-dynamic"
 
-export default async function ChatDetailPage({ params }: { params: { id: string } }) {
-  const id = parseInt(params.id)
+export default async function ChatDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: idStr } = await params
+  const id = parseInt(idStr)
   if (isNaN(id)) notFound()
 
   const chat = await getChatById(id)

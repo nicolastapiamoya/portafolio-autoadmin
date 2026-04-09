@@ -1,4 +1,4 @@
-import { getAllExperiences, getAllProjects, getAllSocialLinks } from "./cms"
+import { getAllExperiences, getAllProjects, getAllSocialLinks, getSiteConfig } from "./cms"
 
 export interface AgentContext {
   profile: {
@@ -12,19 +12,21 @@ export interface AgentContext {
 }
 
 export async function getAgentContext(): Promise<AgentContext> {
-  const [experiences, projects, socials] = await Promise.all([
-    getAllExperiences(),
-    getAllProjects(),
-    getAllSocialLinks(),
-  ])
+  const [experiences, projects, socials, nameConfig, titleConfig, aboutConfig] =
+    await Promise.all([
+      getAllExperiences(),
+      getAllProjects(),
+      getAllSocialLinks(),
+      getSiteConfig("name"),
+      getSiteConfig("role"),
+      getSiteConfig("aboutBio"),
+    ])
 
   return {
     profile: {
-      name: "Nicolás Tapia Moya",
-      title: "Software Engineer & Full Stack Developer",
-      about:
-        "Soy un desarrollador full-stack especializado en crear soluciones robustas y escalables. " +
-        "Me apasiona la tecnología y el aprendizaje continuo.",
+      name: nameConfig?.value || "",
+      title: titleConfig?.value || "",
+      about: aboutConfig?.value || "",
     },
     experiences,
     projects,
@@ -33,6 +35,15 @@ export async function getAgentContext(): Promise<AgentContext> {
 }
 
 export function buildSystemPrompt(context: AgentContext): string {
+  const hasProfile = context.profile.name || context.profile.title || context.profile.about
+
+  if (!hasProfile && context.experiences.length === 0 && context.projects.length === 0) {
+    return `Eres un asistente virtual de portafolio. El administrador aún no ha configurado la información del perfil.
+INSTRUCCIÓN CRÍTICA: NO inventes ningún dato, nombre, habilidad ni experiencia.
+Cuando te pregunten sobre la persona, responde EXACTAMENTE: "El administrador aún no ha configurado la información de este portafolio."
+No digas nada más sobre la persona.`
+  }
+
   const experiencesText = context.experiences
     .map(
       (e) =>
@@ -55,32 +66,33 @@ export function buildSystemPrompt(context: AgentContext): string {
     .map((s) => `- ${s.platform}: ${s.url}`)
     .join("\n")
 
-  return `IDENTIDAD: Eres el asistente virtual de ${context.profile.name}.
+  const displayName = context.profile.name || "esta persona"
+  const firstName = context.profile.name.split(" ")[0] || "el portafolio"
+
+  return `IDENTIDAD: Eres el asistente virtual de ${displayName}.
 
 DATOS PERSONA:
-Nombre: ${context.profile.name}
-Título: ${context.profile.title}
-Sobre: ${context.profile.about}
+Nombre: ${context.profile.name || "(no configurado)"}
+Título: ${context.profile.title || "(no configurado)"}
+Sobre: ${context.profile.about || "(no configurado)"}
 
 EXPERIENCIAS:
-${experiencesText || "(sin datos)"}
+${experiencesText || "(sin datos registrados)"}
 
 PROYECTOS:
-${projectsText || "(sin datos)"}
+${projectsText || "(sin datos registrados)"}
 
 REDES:
-${socialsText || "(sin datos)"}
+${socialsText || "(sin datos registrados)"}
 
-INSTRUCCIONES OBLIGATORIAS:
-- Tu nombre es "Asistente de ${context.profile.name.split(" ")[0]}"
-- SOLO habla sobre la persona arriba mencionada
-- Si preguntan algo fuera de tema, responde: "Solo puedo hablar sobre ${context.profile.name}."
+INSTRUCCIONES CRÍTICAS - DEBES SEGUIRLAS EXACTAMENTE:
+- NUNCA inventes, supongas ni agregues información que no esté en los DATOS PERSONA de arriba
+- Si un campo dice "(no configurado)" o "(sin datos registrados)", responde que esa información no está disponible
+- Tu nombre es "Asistente de ${firstName}"
+- SOLO habla sobre la información que aparece explícitamente arriba
+- Si preguntan algo que no está en los datos, responde: "No tengo esa información disponible."
 - Máximo 3 oraciones por respuesta
 - Idioma: responde en español o inglés según la pregunta
 - NO te presentes como "soy un modelo" ni "soy una IA"
-- NO respondas sobre tecnología general, cocina, etc.
-
-Ejemplo:
-Usuario: "¿Qué sabe hacer?"
-Respuesta: "${context.profile.name} es ${context.profile.title.toLowerCase()} con experiencia en ${context.experiences[0]?.techStack.slice(0,3).join(", ") || "tecnología web"}."`
+- NO respondas sobre tecnología general, cocina, ni temas fuera del perfil`
 }
